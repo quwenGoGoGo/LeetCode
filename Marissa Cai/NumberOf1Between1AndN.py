@@ -9,9 +9,9 @@
     考虑简单的一位数1-9；二位数10-99；三位数100-999：
     一位数：1-9中，1出现了1次   记为f(1)
     二位数：10-99中，对于十位数字一共出现了10次；对于个位数字，把数字分段分成10-19，20-29等等，
-           那么一共分成9段，每一段上1出现的次数为1-9中1出现的次数，共出现次数f(1)*9
+           那么一共分成9段，每一段上1出现的次数为1-9中1出现的次数，共出现次数f(1)*9+10*1
     三位数：100-999中，百位数字上一共出现了100次，即10**2；低位（除了百位数字）上分段100-199，200-299，
-           300-399分成9段，一共出现次数9*f(2)
+           300-399分成9段，一共出现次数9*f(2)+10**2
 '''
 
 
@@ -91,3 +91,19 @@ def NumberOf1Between1AndN(n):
 
 a = int(input('输入一个数：'))
 print(NumberOf1Between1AndN(a))
+
+
+# 求整数中X的个数
+def NumberOfXBetween1AndN(n, x):
+    mult, sumTimes = 1, 0
+    while n//mult > 0:
+        high, mod = divmod(n, mult*10)
+        curNum, low = divmod(mod, mult)
+        if curNum > x:
+            sumTimes += high*mult + mult
+        elif curNum == x:
+            sumTimes += high*mult + low + 1
+        else:
+            sumTimes += high*mult
+        mult = mult * 10
+    return sumTimes
